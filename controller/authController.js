@@ -2,10 +2,15 @@ const User = require('../model/student');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
+
+exports.get_register = (req, res) => {
+    res.status(200).json({ message: "This api working fine" });
+  
+  }
 exports.register = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
-        const user = new User({ username, email, password });
+        const { fullname,phoneno,date,state,city, email, password } = req.body;
+        const user = new User({ fullname, phoneno,date,state ,city,email, password });
         await user.save();
         res.status(201).send('User registered successfully');
     } catch (error) {
@@ -17,6 +22,9 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
+        if(user){
+            res.status(201).send('User login successfully');
+        }
         if (!user) {
             return res.status(400).send('Invalid email or password');
         }

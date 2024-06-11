@@ -2,10 +2,27 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const StudentSchema = new mongoose.Schema({
-    username: {
+    fullname: {
+        type: String,
+        required: true
+        
+    },
+    phoneno:{
         type: String,
         required: true,
         unique: true
+    },
+    date: {
+        type: Date,
+        required:true
+    },
+    state:{
+        type: String,
+        required: true 
+    },
+    city: {
+        type: String,
+        required: true
     },
     email: {
         type: String,
@@ -26,4 +43,4 @@ StudentSchema.pre('save', async function(next) {
     next();
 });
 
-module.exports = mongoose.model('Student', StudentSchema);
+module.exports = mongoose.model('User', StudentSchema);
