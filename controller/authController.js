@@ -1,16 +1,28 @@
 const User = require('../model/student');
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 
-exports.get_register = (req, res) => {
-    res.status(200).json({ message: "This api working fine" });
+// exports.get_register = (req, res) => {
+//     res.status(200).json({ message: "This api working fine" });
   
-  }
+//   }
+exports.get_user= async (req, res) => {
+    try{
+        // res.status(200).json({ message: "This api working fine" });
+        const alluser = await  User.find({});
+        res.send({status:"ok" , data:alluser })
+    }catch (error){
+        console.error(error);
+    }
+   
+  
+}
 exports.register = async (req, res) => {
     try {
-        const { fullname,phoneno,date,state,city, email, password } = req.body;
-        const user = new User({ fullname, phoneno,date,state ,city,email, password });
+        const { fullname,phoneno,date,States,cities, email, password } = req.body;
+        const user = new User({ fullname, phoneno,date,States ,cities,email, password });
         await user.save();
         res.status(201).send('User registered successfully');
     } catch (error) {
@@ -38,3 +50,4 @@ exports.login = async (req, res) => {
         res.status(400).send('Error logging in: ' + error.message);
     }
 };
+
