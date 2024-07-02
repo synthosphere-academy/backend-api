@@ -12,12 +12,10 @@ exports.admin_login = async (req, res) => {
         if (!admin_user) {
             return res.status(400).send('Invalid email or password');
         }
-        // const isMatch = await bcrypt.compare(password, user.password);
-        // if (!isMatch) {
-        //     return res.status(400).send('Invalid email or password');
-        // }
-        const token = jwt.sign({ adminId: admin._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+        // Generate the token(payload,secret_key,option)
+        const token = jwt.sign({ adminuser: admin.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        console.log(token);
+        return res.json({ token });
     } catch (error) {
         res.status(400).send('Error logging in: ' + error.message);
     }
