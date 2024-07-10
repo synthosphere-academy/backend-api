@@ -10,7 +10,6 @@ const userSchema = new mongoose.Schema({
     phoneno:{
         type: String,
         required: true,
-        unique: true
     },
     date: {
         type: Date,
@@ -27,21 +26,22 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        
     },
     course:{
         type: String,
         required: true
         
     },
-    image: {
+    amount: {
         type: String,
         required: true
     },
+    
     createdAt: {
          type: Date, 
         default: Date.now 
     }
 });
 
-module.exports = mongoose.model('offlineUsers', userSchema);
+module.exports = mongoose.model('offlineusers', userSchema);
