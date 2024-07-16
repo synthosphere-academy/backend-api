@@ -10,7 +10,6 @@ exports.blog_post= async (req, res) => {
     }
 }; 
 exports.get_blog = async (req, res) => {
-    
     try{
         // res.status(200).json({ message: "This api working fine" });
         const allblog = await  blog.find({});

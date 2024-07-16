@@ -7,14 +7,12 @@ const  instance = require('../server.js');
 const crypto = require('crypto');
 const { default: mongoose } = require('mongoose');
 require('dotenv').config();
-
-
-
-
+//get register testing purpose
 exports.get_register = (req, res) => {
     res.status(200).json({ message: "This api working fine" });
   
   }
+// get all student details from User schema
 exports.get_user= async (req, res) => {
     try{
         // res.status(200).json({ message: "This api working fine" });
@@ -26,7 +24,7 @@ exports.get_user= async (req, res) => {
    
   
 }
-
+//get all offline student details from offlineusers schema
 exports.get_offline= async (req, res) => {
     try{
         // res.status(200).json({ message: "This api working fine" });
@@ -37,6 +35,8 @@ exports.get_offline= async (req, res) => {
     }
   
 }
+
+//get all  offline student payment details from payment schema
 exports.get_payment= async (req, res) => {
     try{
         // res.status(200).json({ message: "This api working fine" });
@@ -45,14 +45,8 @@ exports.get_payment= async (req, res) => {
     }catch (error){
         console.error(error);
     }
-
-   
-    
-  
+ 
 }
-
-
-
 
 
 // exports.offlineregister = async (req, res) => {
@@ -71,6 +65,8 @@ exports.get_payment= async (req, res) => {
 //         res.status(400).send('Error registering user: ' + error.message);
 //     }
 // };
+
+//for  offline student form registration 
 exports.offlineregister= async(req,res) => {
 try{
      const { fullname,phoneno,date,States,cities, email,course ,amount} = req.body;
@@ -84,11 +80,7 @@ try{
       };
       const order = await instance.orders.create(options)
        console.log(order);
-       const save_offilineuser = await offlineuser_details.save();
-       
-    // Get the ObjectId of the saved user
-    const userId = save_offilineuser._id;
-
+     await offlineuser_details.save();
         res.status(200).json({success:true, order});
 }catch(error) {
     console.error('Error creating Razorpay order:', error);
@@ -97,6 +89,8 @@ try{
 
 };
 
+
+// for offline student payment verification
 exports.paymentverification= async(req,res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     console.log(razorpay_order_id);
@@ -114,10 +108,7 @@ exports.paymentverification= async(req,res) => {
         
         console.log(razorpay_signature);
         if (generated_signature === razorpay_signature) {
-
-
             //database
-          
             const paymentdetails = new Payment({ fullname,phoneno,course,amount,razorpay_order_id, razorpay_payment_id,razorpay_signature });
             console.log('Saving user data:', paymentdetails);
             try {
@@ -126,12 +117,7 @@ exports.paymentverification= async(req,res) => {
             } catch (error) {
                 console.error('Error saving user data:', error.message);
             }
-            // await payment.create({
-            //     razorpay_order_id, razorpay_payment_id, razorpay_signature
-            // });
-             //const offlineuser = new offlineUsers({ fullname, phoneno,date,States ,cities,email, course ,amount,razorpay_payment_id,razorpay_order_id});
-            //        await offlineuser.save();
-            // return res.redirect('http://localhost:5173/PaymentSucess')
+            return res.redirect('http://localhost:5173/PaymentSucess');
             // res.status(200).send({ status: 'success' });
         } 
     
@@ -143,7 +129,7 @@ exports.paymentverification= async(req,res) => {
     
     };
 
-
+//registration api for student
 exports.register = async (req, res) => {
     try {
         const { fullname,phoneno,date,States,cities, email, password } = req.body;
@@ -155,6 +141,7 @@ exports.register = async (req, res) => {
     }
 };
 
+// login api for student
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -163,7 +150,7 @@ exports.login = async (req, res) => {
             // const token  = jwt.sign({email: user.email},process.env.JWT_SECRET,{expiresIn: '1h'},(err,res)=>{
             //     if(res){
             //         res.json({ token })
-            return res.json({ email: user.fullname });
+            return res.json({ fullname: user.fullname });
             return res.status(201).send('User login successfully');
                   
                 //  }else{
@@ -172,10 +159,7 @@ exports.login = async (req, res) => {
 
             // }) 
            
-                    // return res.send(user,{auth:token});
-                  
-            
-             
+                    // return res.send(user,{auth:token});   
         }
         if (!user) {
             return res.status(400).send('Invalid email or password');

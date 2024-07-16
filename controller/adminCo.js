@@ -7,8 +7,7 @@ exports.admin_login = async (req, res) => {
         if(admin_user){
             res.status(201).send('admin login successfully');
             return;
-        }
-        
+        }  
         if (!admin_user) {
             return res.status(400).send('Invalid email or password');
         }
