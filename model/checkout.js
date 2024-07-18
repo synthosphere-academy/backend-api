@@ -4,6 +4,10 @@ const CheckoutSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userId:{
+        type: String,
+        required: true
+    },
     phoneno:{
         type: String,
         required: true
@@ -20,7 +24,10 @@ const CheckoutSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
+    id:{
+        type: String,
+        required: true
+    },
     courses:{
         type: String,
         required: true

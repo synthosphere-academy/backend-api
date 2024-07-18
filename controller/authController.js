@@ -150,8 +150,8 @@ exports.login = async (req, res) => {
             // const token  = jwt.sign({email: user.email},process.env.JWT_SECRET,{expiresIn: '1h'},(err,res)=>{
             //     if(res){
             //         res.json({ token })
-            return res.json({ fullname: user.fullname });
-            return res.status(201).send('User login successfully');
+            return res.json({ fullname: user.fullname, user_id: user.id});
+            // return res.status(201).send('User login successfully');
                   
                 //  }else{
                 //     return res.send({result:"something went"})
@@ -174,5 +174,24 @@ exports.login = async (req, res) => {
         res.status(400).send('Error logging in: ' + error.message);
     }
 };
+
+//get user details by its id
+exports.getuser_by_id = async (req, res) => {
+    try {
+        const userId = req.params.id;
+         console.log(userId);
+      const userdetails = await User.findById((userId));
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+      if (!userdetails) {
+        return res.status(404).json({ error: 'user not found' });
+      }
+      res.status(200).json(userdetails);
+      // res.send({ status:"ok", data:course })
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
 
 
