@@ -63,7 +63,16 @@ const SectionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    sections: [SectionSchema],
+    introduction_video:{
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date, 
+       default: Date.now 
+   },
+    sections: [SectionSchema],  
+  },
     
-  });
+);
 module.exports = mongoose.model('coursemain', Course_Schema);

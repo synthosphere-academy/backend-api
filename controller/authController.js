@@ -5,8 +5,14 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const  instance = require('../server.js');
 const crypto = require('crypto');
+const {secretKey} = require('../middleware/jwtsecretkey.js');
 const { default: mongoose } = require('mongoose');
 require('dotenv').config();
+
+
+console.log(secretKey)
+
+
 //get register testing purpose
 exports.get_register = (req, res) => {
     res.status(200).json({ message: "This api working fine" });
@@ -147,19 +153,13 @@ exports.login = async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
         if(user){
+            const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
             // const token  = jwt.sign({email: user.email},process.env.JWT_SECRET,{expiresIn: '1h'},(err,res)=>{
             //     if(res){
             //         res.json({ token })
-            return res.json({ fullname: user.fullname, user_id: user.id});
+            return res.json({ token, fullname: user.fullname, user_id: user.id});
             // return res.status(201).send('User login successfully');
-                  
-                //  }else{
-                //     return res.send({result:"something went"})
-                //  }
-
-            // }) 
-           
-                    // return res.send(user,{auth:token});   
+                    
         }
         if (!user) {
             return res.status(400).send('Invalid email or password');

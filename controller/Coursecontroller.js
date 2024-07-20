@@ -29,8 +29,8 @@ exports.get_course = async (req, res) => {
   };
   exports.course = async (req, res) => {
     try {
-        const { course_name,course_description,wewilllearn,total_video,teacher_name, course_category, course_price ,image,sections} = req.body;
-        const course_details = new coursemain({ course_name,course_description,wewilllearn,total_video,teacher_name, course_category, course_price ,image,sections });
+        const { course_name,course_description,wewilllearn,total_video,teacher_name, course_category, course_price ,image,introduction_video,sections} = req.body;
+        const course_details = new coursemain({ course_name,course_description,wewilllearn,total_video,teacher_name, course_category, course_price ,image,introduction_video,sections });
         await course_details.save();
         res.status(201).send('Course is  successfully added');
     } catch (error) {
@@ -50,5 +50,17 @@ exports.getcourse_by_id = async (req, res) => {
       // res.send({ status:"ok", data:course })
     } catch (err) {
       res.status(500).json({ error: err.message });
+    }
+  };
+
+  exports.searchcourse = async (req, res) => {
+    try {
+        const query = req.query.q;
+        const courses = await coursemain.find({
+            course_name: { $regex: query, $options: 'i' } // Case-insensitive search
+        });
+        res.json(courses);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
   };
