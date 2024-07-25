@@ -31,3 +31,20 @@ exports.get_blog = async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   };
+
+  //edit blog
+  exports.update_blog = async (req, res) => {
+    try {
+      const blogId = req.params.id;
+      const updateData = req.body;
+      const updatedblog = await blog.findByIdAndUpdate(blogId, updateData, { new: true });
+      
+      if (!updatedblog) {
+        return res.status(404).json({ message: 'Blog not found' });
+      }
+  
+      res.status(200).json(updatedblog);
+    } catch (error) {
+      res.status(500).json({ message: 'Server error', error });
+    }
+  };

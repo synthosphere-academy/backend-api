@@ -64,3 +64,38 @@ exports.getcourse_by_id = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
   };
+
+  //for edit course
+  exports.update_course = async (req, res) => {
+    try {
+      const courseId = req.params.id;
+      const updateData = req.body;
+      const updatedCourse = await coursemain.findByIdAndUpdate(courseId, updateData, { new: true });
+      
+      if (!updatedCourse) {
+        return res.status(404).json({ message: 'Course not found' });
+      }
+  
+      res.status(200).json(updatedCourse);
+    } catch (error) {
+      res.status(500).json({ message: 'Server error', error });
+    }
+  };
+
+  //for delete course
+  exports.delete_course = async (req, res) => {
+    
+  
+    try {
+      const courseId = req.params.id;
+      const result = await coursemain.findByIdAndDelete(courseId);
+  
+      if (!result) {
+        return res.status(404).json({ message: 'Course not found' });
+      }
+      res.status(200).json({ message: 'Course deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting course:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };

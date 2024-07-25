@@ -1,12 +1,15 @@
 const admin = require('../model/admin');
+const {secretKey} = require('../middleware/jwtsecretkey.js');
 const jwt = require('jsonwebtoken');
 exports.admin_login = async (req, res) => {
     try {
         // const { username, password } = req.body;
         const admin_user = await admin.findOne({ username: req.body.username });
         if(admin_user){
-            res.status(201).send('admin login successfully');
-            return;
+            const token = jwt.sign({ adminId: admin._id }, secretKey, { expiresIn: '5h' });
+            return res.json({ admin_token: token ,admin_id: admin.id});
+            // res.status(201).send('admin login successfully');
+            
         }  
         if (!admin_user) {
             return res.status(400).send('Invalid email or password');

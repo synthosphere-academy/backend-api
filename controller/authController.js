@@ -1,6 +1,7 @@
 const User = require('../model/student');
  const offlineusers = require('../model/offlineregester');
  const Payment = require('../model/payment.js');
+ const onlinepayment = require('../model/checkout.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const  instance = require('../server.js');
@@ -54,23 +55,19 @@ exports.get_payment= async (req, res) => {
  
 }
 
+//for  online student payment details from checkout schema
+exports.get_onlinepayment= async (req, res) => {
+    try{
+        // res.status(200).json({ message: "This api working fine" });
+        const allpaymentdetails = await  onlinepayment.find({});
+        res.send({status:"ok" , data:allpaymentdetails })
+    }catch (error){
+        console.error(error);
+    }
+}
 
-// exports.offlineregister = async (req, res) => {
-    
-//     try {
-//         const { fullname,phoneno,date,States,cities, email,course, image } = req.body;
-//         const userExists = offlineUsers.find(offlineUsers.email === email);
-//         // if (userExists) {
-//         //     return res.status(400).json({error:'User already exists'});
-//         // }
-//         const offlineuser = new offlineUsers({ fullname, phoneno,date,States ,cities,email, course });
-//         await offlineuser.save();
-//         res.status(201).send('User registered successfully');
-       
-//     } catch (error) {
-//         res.status(400).send('Error registering user: ' + error.message);
-//     }
-// };
+
+
 
 //for  offline student form registration 
 exports.offlineregister= async(req,res) => {
@@ -154,9 +151,7 @@ exports.login = async (req, res) => {
         const user = await User.findOne({ email });
         if(user){
             const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
-            // const token  = jwt.sign({email: user.email},process.env.JWT_SECRET,{expiresIn: '1h'},(err,res)=>{
-            //     if(res){
-            //         res.json({ token })
+            
             return res.json({ token, fullname: user.fullname, user_id: user.id});
             // return res.status(201).send('User login successfully');
                     
