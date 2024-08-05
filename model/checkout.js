@@ -33,7 +33,7 @@ const CheckoutSchema = new mongoose.Schema({
         required: true
     },
     amount:{
-        type: String,
+        type: Number,
         required: true
     },
     razorpay_order_id:{

@@ -149,13 +149,7 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
-        if(user){
-            const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
-            
-            return res.json({ token, fullname: user.fullname, user_id: user.id});
-            // return res.status(201).send('User login successfully');
-                    
-        }
+        
         if (!user) {
             return res.status(400).send('Invalid email or password');
         }
@@ -163,6 +157,8 @@ exports.login = async (req, res) => {
         if (!isMatch) {
             return res.status(400).send('Invalid email or password');
         }
+        const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
+        return res.json({ token, fullname: user.fullname, user_id: user.id});
         // const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET,{expiresIn: '1h' });
         // res.json({ token });
     } catch (error) {

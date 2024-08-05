@@ -11,6 +11,18 @@ exports.get_course = async (req, res) => {
         console.error(error);
     }
   }
+
+  exports.getenrolledcourseby_teacherid = async (req, res) => {
+    try {
+      const teacherId = req.params.id;
+      const courses = await coursemain.find({ teacherId });
+       console.log('Courses:', courses);
+      res.status(200).json(courses);
+    } catch (error) {
+      console.error('Error fetching enrolled courses:', error);
+      res.status(500).json({ error: 'Server error' });
+    }
+  };
   exports.getenrolledcourseby_userid = async (req, res) => {
     try {
       const userId = req.params.id;
@@ -29,8 +41,8 @@ exports.get_course = async (req, res) => {
   };
   exports.course = async (req, res) => {
     try {
-        const { course_name,course_description,wewilllearn,total_video,teacher_name, course_category, course_price ,image,introduction_video,sections} = req.body;
-        const course_details = new coursemain({ course_name,course_description,wewilllearn,total_video,teacher_name, course_category, course_price ,image,introduction_video,sections });
+        const { course_name,course_description,wewilllearn,total_video,teacherId,teacher_name, course_category, course_price ,image,introduction_video,sections} = req.body;
+        const course_details = new coursemain({ course_name,course_description,wewilllearn,total_video,teacherId,teacher_name, course_category, course_price ,image,introduction_video,sections });
         await course_details.save();
         res.status(201).send('Course is  successfully added');
     } catch (error) {

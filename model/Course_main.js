@@ -47,6 +47,10 @@ const SectionSchema = new mongoose.Schema({
         type:String,
         required: true
     },
+    teacherId:{
+        type: String,
+        required: true
+    },
     teacher_name:{
         type: String,
         required: true

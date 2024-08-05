@@ -10,7 +10,7 @@ require('dotenv').config();
 exports.getorderdetails_by_userid = async (req, res) => {
     try {
         const userId = req.params.id;
-         console.log(userId);
+        //  console.log(userId);
       const orderdetails = await Checkout.find({userId});
       
       if (!orderdetails) {
@@ -22,6 +22,25 @@ exports.getorderdetails_by_userid = async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   };
+//order details by its orderid
+exports.getorderdetails_by_orderid = async (req, res) => {
+  try {
+      // const orderId = req.params.id;
+      //  console.log(orderId);
+    const orderdetails = await Checkout.findById(req.params.id);
+    
+    if (!orderdetails) {
+      return res.status(404).json({ error: 'order not found' });
+    }
+    // res.status(200).json(orderdetails);
+     res.send({ status:"ok", data:orderdetails })
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
 exports.checkout= async(req,res) => {
     try{
         //  const { fullname,phoneno,date,States,cities, email,course ,amount} = req.body;
@@ -85,5 +104,24 @@ exports.checkout= async(req,res) => {
         }
         
         };
+
+        //get total amount purchase////////////////////////////////
+        exports.gettotalamount = async (req, res) => {
+          try {
+             
+           
+            const orders = await Checkout.find({});
+            const totalAmount = orders.reduce((total, order) => total + parseFloat(order.amount), 0);
+            res.json({ totalAmount });
+            
+            if (!orders) {
+              return res.status(404).json({ error: 'total amount  not found' });
+            }
+            // res.send({ status:"ok", data:course })
+          } catch (err) {
+            res.status(500).json({ error: err.message });
+          }
+        };
+
     
     
