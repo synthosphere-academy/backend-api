@@ -20,8 +20,8 @@ exports.userdetailsbyteacherid= async (req, res) => {
 }; 
 exports.teacher_post= async (req, res) => {
     try {
-        const { fullname,email,password,phoneno,pancard,address} = req.body;
-        const teacher_details = new Teacher({fullname,email,password,phoneno,pancard,address});
+        const { fullname,email,teacher_dept , password,phoneno,pancard,address} = req.body;
+        const teacher_details = new Teacher({fullname,email,teacher_dept,password,phoneno,pancard,address});
         await teacher_details.save();
         res.status(201).send('Teacher is  successfully added');
     } catch (error) {
@@ -32,7 +32,7 @@ exports.teacher_login = async (req, res) => {
     try {
         
         const teacher_user = await Teacher.findOne({ email: req.body.username });
-        if(teacher_user){
+        if(teacher_user.password === req.body.password ){
             // const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
             
             return res.json({fullname: teacher_user.fullname, teacher_id: teacher_user._id});

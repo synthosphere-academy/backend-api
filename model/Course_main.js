@@ -44,7 +44,7 @@ const SectionSchema = new mongoose.Schema({
         required: true
     },
     total_video:{
-        type:String,
+        type:Number,
         required: true
     },
     teacherId:{
@@ -55,12 +55,16 @@ const SectionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    teacher_dept:{
+        type: String,
+        required: true
+    },
     course_category:{
         type: String,
         required: true
     },
     course_price:{
-        type: String,
+        type: Number,
         required: true
     },
     image:{

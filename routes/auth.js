@@ -3,7 +3,7 @@ const { register, login ,get_user,get_register,offlineregister,paymentverificati
 
 const {admin_login} = require('../controller/adminCo');
 const authMiddleware = require('../middleware/authMiddleware');
-const {getorderdetails_by_userid,checkout,paymentverification_students,getorderdetails_by_orderid,gettotalamount} = require('../controller/checkoutController'); 
+const {getorderdetails_by_userid,checkout,paymentverification_students,getorderdetails_by_orderid,gettotalamount,getmonthlytotal} = require('../controller/checkoutController'); 
 const {teacher_post,teacher_login,get_teacher,userdetailsbyteacherid }= require('../controller/teacherController');
 
 const router = express.Router();
@@ -32,6 +32,7 @@ router.post('/login',login);
  //admin login
 router.post('/admin',admin_login)
 router.get('/gettotalamount', gettotalamount);
+router.get('/getmonthlytotal', getmonthlytotal);
 ////////////teacher/////////////////////
 router.post('/addteacher', teacher_post);
 router.post('/teacher', teacher_login);

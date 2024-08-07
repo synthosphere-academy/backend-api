@@ -122,6 +122,25 @@ exports.checkout= async(req,res) => {
             res.status(500).json({ error: err.message });
           }
         };
+exports.getmonthlytotal = async(req, res) => {
+  try{
+    const monthlytotal= await Checkout.aggregate([
+      {
+        $group: {
+          _id: { month: { $month: '$createdAt' }, year: { $year: '$createdAt' } },
+          totalAmount: { $sum: '$amount' }
+        }
+      },
+      {
+        $sort: { '_id.year': 1, '_id.month': 1 }
+      }
+    ]);
+
+    res.json(monthlytotal);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+  }
 
     
     
