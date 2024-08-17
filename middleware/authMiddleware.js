@@ -14,7 +14,7 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  console.log('Token:', token); 
+  // console.log('Token:', token); 
     // const token = req.headers['authorization'];
     // console.log(token)
     // if (!token) {

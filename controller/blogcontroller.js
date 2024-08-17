@@ -1,8 +1,8 @@
 const blog = require('../model/blog');
 exports.blog_post= async (req, res) => {
     try {
-        const { blogtitle,blogdescription,shortdescription,image} = req.body;
-        const blog_details = new blog({blogtitle,blogdescription,shortdescription,image });
+        const { blogtitle,blogdescription,shortdescription,slug,image} = req.body;
+        const blog_details = new blog({blogtitle,blogdescription,shortdescription,slug,image });
         await blog_details.save();
         res.status(201).send('Blog is  successfully added');
     } catch (error) {
@@ -18,12 +18,25 @@ exports.get_blog = async (req, res) => {
         console.error(error);
     }
   }
-  exports.getblogby_id = async (req, res) => {
+  // exports.getblogby_id = async (req, res) => {
+  //   try {
+     
+  //     const blogdetails = await blog.findById(req.params.id);
+  //     if (!blogdetails) {
+  //       return res.status(404).json({ error: 'blog not found' });
+  //     }
+  //     res.json(blogdetails);
+  //     // res.send({ status:"ok", data:course })
+  //   } catch (err) {
+  //     res.status(500).json({ error: err.message });
+  //   }
+  // };
+  exports.getblogby_slag = async (req, res) => {
     try {
      
-      const blogdetails = await blog.findById(req.params.id);
+      const blogdetails = await blog.findOne({slug: req.params.slug });
       if (!blogdetails) {
-        return res.status(404).json({ error: 'Course not found' });
+        return res.status(404).json({ error: 'blog not found' });
       }
       res.json(blogdetails);
       // res.send({ status:"ok", data:course })

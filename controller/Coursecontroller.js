@@ -1,6 +1,6 @@
 const coursemain = require('../model/Course_main');
 const Checkout = require('../model/checkout');
-
+const CompleteChapter = require('../model/completechapter');
 exports.get_course = async (req, res) => {
     // res.status(200).json({ message: "This api working fine courses" });
     try{
@@ -111,3 +111,59 @@ exports.getcourse_by_id = async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
   };
+
+//completed chapter of a course for a user
+exports.completedchapter = async (req, res) => {
+  const { userId, courseId, chapterId } = req.body;
+
+  try {
+    let completionRecord = await CompleteChapter.findOne({ userId, courseId, chapterId });
+
+    if (completionRecord) {
+      // If the record exists, update it
+      completionRecord.completionStatus = true;
+      completionRecord.timestamp = Date.now();
+      await completionRecord.save();
+    } else {
+      // If it doesn't exist, create a new one
+      completionRecord = new CompleteChapter({
+        userId,
+        courseId,
+        chapterId,
+        completionStatus: true,
+      });
+      await completionRecord.save();
+    }
+
+    res.status(200).json({ message: 'Chapter completion saved successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error saving chapter completion', error });
+  }
+  
+};
+
+//to fetch the completed chapters
+
+exports.getCompletedChapters = async (req, res) => {
+  try {
+    const userId =req.params.userId;
+    const courseId = req.params.id;
+
+    console.log("Querying with userId:", userId);
+    console.log("Querying with courseId:", courseId);
+
+    const completedChapters = await CompleteChapter.find({
+      userId: userId,
+      courseId: courseId,
+    }).select('chapterId');
+
+    // console.log("Completed Chapters:", completedChapters);
+
+    res.status(200).json({
+      chapters: completedChapters.map((chapter) => chapter.chapterId),
+    });
+  } catch (error) {
+    console.error('Error fetching completed chapters:', error);
+    res.status(500).json({ message: 'Error fetching completed chapters', error: error.message });
+  }
+};
