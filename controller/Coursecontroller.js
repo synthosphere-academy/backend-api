@@ -2,16 +2,13 @@ const coursemain = require('../model/Course_main');
 const Checkout = require('../model/checkout');
 const CompleteChapter = require('../model/completechapter');
 exports.get_course = async (req, res) => {
-    // res.status(200).json({ message: "This api working fine courses" });
     try{
-        // res.status(200).json({ message: "This api working fine" });
         const allcourse = await  coursemain.find({});
         res.send({status:"ok" , data:allcourse })
     }catch (error){
         console.error(error);
     }
   }
-
   exports.getenrolledcourseby_teacherid = async (req, res) => {
     try {
       const teacherId = req.params.id;
@@ -29,7 +26,6 @@ exports.get_course = async (req, res) => {
       const orders = await Checkout.find({ userId });
       const courseIds = orders.map(order => order.id);
       // console.log('Course IDs:', courseIds);
-  
       // Fetch course details manually
       const courses = await coursemain.find({ _id: { $in: courseIds } });
       // console.log('Courses:', courses);
@@ -69,14 +65,13 @@ exports.getcourse_by_id = async (req, res) => {
     try {
         const query = req.query.q;
         const courses = await coursemain.find({
-            course_name: { $regex: query, $options: 'i' } // Case-insensitive search
+            course_name: { $regex: query, $options: 'i' } 
         });
         res.json(courses);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
   };
-
   //for edit course
   exports.update_course = async (req, res) => {
     try {
@@ -93,15 +88,11 @@ exports.getcourse_by_id = async (req, res) => {
       res.status(500).json({ message: 'Server error', error });
     }
   };
-
   //for delete course
   exports.delete_course = async (req, res) => {
-    
-  
     try {
       const courseId = req.params.id;
       const result = await coursemain.findByIdAndDelete(courseId);
-  
       if (!result) {
         return res.status(404).json({ message: 'Course not found' });
       }
@@ -111,14 +102,11 @@ exports.getcourse_by_id = async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
   };
-
 //completed chapter of a course for a user
 exports.completedchapter = async (req, res) => {
   const { userId, courseId, chapterId } = req.body;
-
   try {
     let completionRecord = await CompleteChapter.findOne({ userId, courseId, chapterId });
-
     if (completionRecord) {
       // If the record exists, update it
       completionRecord.completionStatus = true;
@@ -134,31 +122,21 @@ exports.completedchapter = async (req, res) => {
       });
       await completionRecord.save();
     }
-
     res.status(200).json({ message: 'Chapter completion saved successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error saving chapter completion', error });
   }
-  
 };
-
 //to fetch the completed chapters
-
 exports.getCompletedChapters = async (req, res) => {
   try {
     const userId =req.params.userId;
     const courseId = req.params.id;
-
-    console.log("Querying with userId:", userId);
-    console.log("Querying with courseId:", courseId);
-
     const completedChapters = await CompleteChapter.find({
       userId: userId,
       courseId: courseId,
     }).select('chapterId');
-
     // console.log("Completed Chapters:", completedChapters);
-
     res.status(200).json({
       chapters: completedChapters.map((chapter) => chapter.chapterId),
     });

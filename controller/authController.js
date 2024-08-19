@@ -11,7 +11,7 @@ const { default: mongoose } = require('mongoose');
 require('dotenv').config();
 
 
-console.log(secretKey)
+// console.log(secretKey)
 
 
 //get register testing purpose
@@ -65,10 +65,6 @@ exports.get_onlinepayment= async (req, res) => {
         console.error(error);
     }
 }
-
-
-
-
 //for  offline student form registration 
 exports.offlineregister= async(req,res) => {
 try{
@@ -92,17 +88,14 @@ try{
 
 };
 
-
 // for offline student payment verification
 exports.paymentverification= async(req,res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     console.log(razorpay_order_id);
     console.log(razorpay_payment_id);
     console.log(razorpay_signature);
-
     try{
         const { fullname,phoneno,course,amount,razorpay_order_id, razorpay_payment_id, razorpay_signature} = req.body;
-    
         const hmac = crypto.createHmac('sha256',  process.env.RAZORPAY_API_SECRET);
         hmac.update(razorpay_order_id + '|' + razorpay_payment_id);
         const generated_signature = hmac.digest('hex');
@@ -126,10 +119,8 @@ exports.paymentverification= async(req,res) => {
     
     }catch(error) {
         console.error('Error creating Razorpay:', error);
-        res.status(400).send({ status: 'failure' });
-       
+        res.status(400).send({ status: 'failure' });     
     }
-    
     };
 
 //registration api for student
@@ -159,13 +150,10 @@ exports.login = async (req, res) => {
         }
         const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '5h' });
         return res.json({ token, fullname: user.fullname, user_id: user.id});
-        // const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET,{expiresIn: '1h' });
-        // res.json({ token });
     } catch (error) {
         res.status(400).send('Error logging in: ' + error.message);
     }
 };
-
 //get user details by its id
 exports.getuser_by_id = async (req, res) => {
     try {
@@ -179,7 +167,6 @@ exports.getuser_by_id = async (req, res) => {
         return res.status(404).json({ error: 'user not found' });
       }
       res.status(200).json(userdetails);
-      // res.send({ status:"ok", data:course })
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

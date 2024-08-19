@@ -17,10 +17,7 @@ exports.admin_login = async (req, res) => {
             const token = jwt.sign({ adminId: admin._id }, secretKey, { expiresIn: '5h' });
             return res.json({ admin_token: token ,admin_id: admin.id});
         }
-        // // Generate the token(payload,secret_key,option)
-        // const token = jwt.sign({ adminuser: admin.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        // console.log(token);
-        // return res.json({ token });
+       
     } catch (error) {
         res.status(400).send('Error logging in: ' + error.message);
     }

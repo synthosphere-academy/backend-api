@@ -1,10 +1,6 @@
 const Teacher= require('../model/teacher');
 const coursemain = require('../model/Course_main');
 const Checkout = require('../model/checkout');
-
-
-
-
 exports.userdetailsbyteacherid= async (req, res) => {
     const teacherId = req.params.id;
     try {
@@ -42,20 +38,14 @@ exports.teacher_login = async (req, res) => {
         if (!user) {
             return res.status(400).send('Invalid email or password');
         }
-        // const isMatch = await bcrypt.compare(password, user.password);
-        // if (!isMatch) {
-        //     return res.status(400).send('Invalid email or password');
-        // }
-        // const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET,{expiresIn: '1h' });
-        // res.json({ token });
     } catch (error) {
         res.status(400).send('Error logging in: ' + error.message);
     }
 };
 exports.get_teacher = async (req, res) => {
-    // res.status(200).json({ message: "This api working fine courses" });
+  
     try{
-        // res.status(200).json({ message: "This api working fine" });
+        
         const allteacher = await  Teacher.find({});
         res.json(allteacher);
     }catch (error){

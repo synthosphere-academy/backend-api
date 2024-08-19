@@ -11,7 +11,6 @@ exports.blog_post= async (req, res) => {
 }; 
 exports.get_blog = async (req, res) => {
     try{
-        // res.status(200).json({ message: "This api working fine" });
         const allblog = await  blog.find({});
         res.send({status:"ok" , data:allblog })
     }catch (error){
@@ -39,7 +38,7 @@ exports.get_blog = async (req, res) => {
         return res.status(404).json({ error: 'blog not found' });
       }
       res.json(blogdetails);
-      // res.send({ status:"ok", data:course })
+    
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
