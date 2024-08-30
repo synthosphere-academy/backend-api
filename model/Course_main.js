@@ -63,6 +63,10 @@ const SectionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    tag:{
+        type: String,
+        required: true
+    },
     course_price:{
         type: Number,
         required: true

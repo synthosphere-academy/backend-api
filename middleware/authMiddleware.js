@@ -13,7 +13,6 @@ const verifyToken = (req, res, next) => {
     console.log('Token is missing');
     return res.status(401).json({ error: 'Unauthorized' });
   }
-
   // console.log('Token:', token); 
     // const token = req.headers['authorization'];
     // console.log(token)
@@ -21,7 +20,6 @@ const verifyToken = (req, res, next) => {
 
     //   return res.status(403).json({ error: 'No token provided' });
     // }
-  
     jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {
         console.log('JWT verification error:', err);
@@ -31,5 +29,4 @@ const verifyToken = (req, res, next) => {
       next();
     });
   };
-  
   module.exports = verifyToken;

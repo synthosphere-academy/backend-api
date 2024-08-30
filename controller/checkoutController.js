@@ -6,7 +6,6 @@ exports.getorderdetails_by_userid = async (req, res) => {
     try {
         const userId = req.params.id;
       const orderdetails = await Checkout.find({userId});
-      
       if (!orderdetails) {
         return res.status(404).json({ error: 'user not found' });
       }
@@ -18,8 +17,7 @@ exports.getorderdetails_by_userid = async (req, res) => {
 //order details by its orderid
 exports.getorderdetails_by_orderid = async (req, res) => {
   try {
-    const orderdetails = await Checkout.findById(req.params.id);
-    
+    const orderdetails = await Checkout.findById(req.params.id); 
     if (!orderdetails) {
       return res.status(404).json({ error: 'order not found' });
     }
