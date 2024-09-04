@@ -37,8 +37,8 @@ exports.get_course = async (req, res) => {
   };
   exports.course = async (req, res) => {
     try {
-        const { course_name,course_description,wewilllearn,total_video,teacherId,teacher_name,teacher_dept, course_category,tag, course_price ,image,introduction_video,sections} = req.body;
-        const course_details = new coursemain({ course_name,course_description,wewilllearn,total_video,teacherId,teacher_name,teacher_dept, course_category,tag, course_price ,image,introduction_video,sections });
+        const { course_name,course_description,wewilllearn,total_video,teacherId,teacher_name,teacher_dept, course_category, course_price ,image,introduction_video,sections} = req.body;
+        const course_details = new coursemain({ course_name,course_description,wewilllearn,total_video,teacherId,teacher_name,teacher_dept, course_category, course_price ,image,introduction_video,sections });
         await course_details.save();
         res.status(201).send('Course is  successfully added');
     } catch (error) {
