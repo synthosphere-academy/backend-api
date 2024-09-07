@@ -9,7 +9,7 @@ router.put('/editcourses/:id',update_course);
 router.post('/course', course);
 router.post('/blog', blog_post);
 router.get('/get_blog', get_blog);
-// router.get('/get_blog/:id', getblogby_id);
+ router.get('/get_blog/:id', getblogby_id);
 
 router.get('/getblog/:slug', getblogby_slag);
 
