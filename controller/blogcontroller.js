@@ -17,19 +17,19 @@ exports.get_blog = async (req, res) => {
         console.error(error);
     }
   }
-  // exports.getblogby_id = async (req, res) => {
-  //   try {
+  exports.getblogby_id = async (req, res) => {
+    try {
      
-  //     const blogdetails = await blog.findById(req.params.id);
-  //     if (!blogdetails) {
-  //       return res.status(404).json({ error: 'blog not found' });
-  //     }
-  //     res.json(blogdetails);
-  //     // res.send({ status:"ok", data:course })
-  //   } catch (err) {
-  //     res.status(500).json({ error: err.message });
-  //   }
-  // };
+      const blogdetails = await blog.findById(req.params.id);
+      if (!blogdetails) {
+        return res.status(404).json({ error: 'blog not found' });
+      }
+      res.json(blogdetails);
+      // res.send({ status:"ok", data:course })
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
   exports.getblogby_slag = async (req, res) => {
     try {
      

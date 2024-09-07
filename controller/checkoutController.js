@@ -64,7 +64,7 @@ exports.checkout= async(req,res) => {
                 console.log('Saving user data:', paymentdetails_student);
                 try {
                   await paymentdetails_student.save();
-                   return res.redirect(process.env.FRONTEND_LOCALHOST_URL+'/paymentSucess');
+                  //  return res.redirect(process.env.FRONTEND_LOCALHOST_URL+'/paymentSucess');
                     // console.log('student paymentdata saved successfully');
                 } catch (error) {
                     console.error('Error saving user data:', error.message);
