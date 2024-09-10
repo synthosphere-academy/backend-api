@@ -1,8 +1,8 @@
 const blog = require('../model/blog');
 exports.blog_post= async (req, res) => {
     try {
-        const { blogtitle,blogdescription,shortdescription,slug,image} = req.body;
-        const blog_details = new blog({blogtitle,blogdescription,shortdescription,slug,image });
+        const { blogtitle,slug,blogdescription,shortdescription,image} = req.body;
+        const blog_details = new blog({blogtitle,slug,blogdescription,shortdescription,image });
         await blog_details.save();
         res.status(201).send('Blog is  successfully added');
     } catch (error) {
