@@ -90,34 +90,32 @@ try{
 
 // for offline student payment verification
 exports.paymentverification= async(req,res) => {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
-    console.log(razorpay_order_id);
-    console.log(razorpay_payment_id);
-    console.log(razorpay_signature);
+    
+    // console.log(razorpay_order_id);
+    // console.log(razorpay_payment_id);
+    // console.log(razorpay_signature);
     try{
         const { fullname,phoneno,course,amount,razorpay_order_id, razorpay_payment_id, razorpay_signature} = req.body;
         const hmac = crypto.createHmac('sha256',  process.env.RAZORPAY_API_SECRET);
         hmac.update(razorpay_order_id + '|' + razorpay_payment_id);
         const generated_signature = hmac.digest('hex');
-        console.log(generated_signature);
         console.log(fullname);
-        
         console.log(razorpay_signature);
+        
         if (generated_signature === razorpay_signature) {
             //database
+            // console.log('Inside block');
             const paymentdetails = new Payment({ fullname,phoneno,course,amount,razorpay_order_id, razorpay_payment_id,razorpay_signature });
-            console.log('Saving user data:', paymentdetails);
-            try {
-                await paymentdetails.save();
-                console.log('User data saved successfully');
-            } catch (error) {
-                console.error('Error saving user data:', error.message);
-            }
-            return res.redirect('http://localhost:5173/PaymentSucess');
-            // res.status(200).send({ status: 'success' });
+            // console.log('Saving user data:', paymentdetails);
+            // console.log('1st attempt');
+            await paymentdetails.save();
+            // console.log('1. payment details saved successfully');
+            // console.log('User data saved successfully');
+            //  return res.redirect('http://localhost:5173/PaymentSucess');
+            res.status(200).send({ status: 'success' });
         } 
-    
     }catch(error) {
+        console.log(error.message);
         console.error('Error creating Razorpay:', error);
         res.status(400).send({ status: 'failure' });     
     }
