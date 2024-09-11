@@ -81,7 +81,15 @@ const SectionSchema = new mongoose.Schema({
        default: Date.now 
    },
     sections: [SectionSchema],  
-  },
-    
-);
+    reviews: [
+        {
+            user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+            rating: { type: Number, min: 1, max: 5 },
+            comment: String,
+            createdAt: { type: Date, default: Date.now }
+        }
+    ]
+  });
+
+
 module.exports = mongoose.model('coursemain', Course_Schema);

@@ -1,5 +1,5 @@
 const express = require('express');
-const {getenrolledcourseby_userid,getenrolledcourseby_teacherid,get_course,course,getcourse_by_id,searchcourse,update_course,delete_course,completedchapter,getCompletedChapters }  = require('../controller/Coursecontroller')
+const {getenrolledcourseby_userid,getenrolledcourseby_teacherid,get_course,course,getcourse_by_id,searchcourse,update_course,delete_course,completedchapter,getCompletedChapters,handlesubmitreview,handledeletereview }  = require('../controller/Coursecontroller')
 const {blog_post,get_blog,getblogby_id,getblogby_slag,update_blog,delete_blog} = require('../controller/blogcontroller')
 const verifyToken = require('../middleware/authMiddleware.js');
 const router = express.Router();
@@ -23,5 +23,8 @@ router.delete('/deletecourse/:id',delete_course);
 router.post('/completedchapter', completedchapter);
 router.get('/getcompletedchapter/:userId/:id', getCompletedChapters);
 
+// New Routes added by Ankit
+router.post('/submitreview/:id', handlesubmitreview);
+router.post('/deletereview/:courseId/:review_owner_id', handledeletereview);
 
-module.exports = router; // Export the router
+module.exports = router;

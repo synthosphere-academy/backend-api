@@ -144,3 +144,65 @@ exports.getCompletedChapters = async (req, res) => {
     res.status(500).json({ message: 'Error fetching completed chapters', error: error.message });
   }
 };
+
+
+// handle submit review
+exports.handlesubmitreview = async (req, res) => {
+  try {
+    const { user_id, rating, comment} = req.body;
+    const courseId = req.params.id;
+
+    // Rating must be within 1-5
+    if (rating < 1 || rating > 5) {
+      return res.status(400).json({ message: 'Rating must be between 1 and 5' });
+    }
+
+    // Find course
+    const course = await coursemain.findOne({_id: courseId});
+    if(!course) {res.status(400).json({ message: 'Course not found' });}
+    
+    // Add the review to the course's reviews array
+    course.reviews.push({
+      user_id: user_id,
+      rating: rating, 
+      comment: comment, 
+    });
+    await course.save();
+
+    res.status(200).json({ message: 'Review submitted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error submitting review', error });
+  }
+};
+
+
+// Handle delete review by admin
+exports.handledeletereview = async (req, res) => {
+  try {
+    const courseId = req.params.courseId; // Course ID from request params
+    const review_owner_id = req.params.review_owner_id; // Review_owner ID from request params
+
+    // Find course by ID
+    const course = await coursemain.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+
+    // Find the review index by review_owner_id
+    const reviewIndex = course.reviews.findIndex(review => review.user_id.toString() === review_owner_id);
+
+    // Check if review exists
+    if (reviewIndex === -1) {
+      return res.status(404).json({ message: 'Review not found' });
+    }
+
+    // Remove the review from the reviews array
+    course.reviews.splice(reviewIndex, 1);
+    await course.save();
+
+    res.status(200).json({ message: 'Review deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting review', error });
+  }
+};
+
