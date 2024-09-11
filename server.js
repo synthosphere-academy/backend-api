@@ -38,37 +38,3 @@ connectDB().then(()=>{
 
 
 
-
-app.post('/abc', async (req, res) => {
-    try{
-        const {name, email, password} = req.body;
-
-        // Joi validation
-        let ans = validateModel({name, email, password});
-        if(ans.error) return res.status(404).send(ans.error.message);
-
-        // check if email already exists
-        const user = await userModel.findOne({email: email});
-        if(user) return res.status(409).send('Email already exists!');
-
-        // create newUser
-        const newUser = await userModel.create({
-            name,
-            email,
-            password
-        });
-
-        // generate JWT token
-        const payload = {email: newUser.email}
-        const token = generateToken(payload);
-
-        // send verification email
-        let response = await sendMail('signupEmailVerification', newUser, token);
-        if(response =='sent')   return res.status(200).send('Signup successful! Please check your email to verify your account.');
-        else if(response == 'error') return res.status(500).send('Error in sending verification email.');
-        else return res.status(500).send('Internal Server Error');
-    }catch(err){
-        console.error(err);
-        res.status(500).json({Error: err.message});
-    }
-});
