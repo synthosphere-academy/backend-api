@@ -1,5 +1,5 @@
 const express = require('express');
-const { register, login ,get_user,get_register,offlineregister,paymentverification,get_offline,get_payment ,get_onlinepayment,getuser_by_id} = require('../controller/authController');
+const { register, login ,get_user,get_register,offlineregister,paymentverification,get_offline,get_payment ,get_onlinepayment,getuser_by_id,handleforgotpassword } = require('../controller/authController');
 
 const {admin_login} = require('../controller/adminCo');
 const authMiddleware = require('../middleware/authMiddleware');
@@ -40,6 +40,9 @@ router.get('/allteacher', get_teacher);
 router.get('/getuserbyteacherid/:id', userdetailsbyteacherid);
 
 
+
+// Routes for forgot password & email verification
+router.post('/forgotpassword', handleforgotpassword);
 
 
 module.exports = router; // Export the router

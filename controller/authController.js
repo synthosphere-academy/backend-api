@@ -9,6 +9,7 @@ const crypto = require('crypto');
 const {secretKey} = require('../middleware/jwtsecretkey.js');
 const { default: mongoose } = require('mongoose');
 require('dotenv').config();
+const { sendMail } = require('../utils/nodemailer.js');
 
 
 // console.log(secretKey)
@@ -171,3 +172,27 @@ exports.getuser_by_id = async (req, res) => {
   };
 
 
+
+// handle forgot password
+exports.handleforgotpassword = async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      };
+
+      // generate JWT token
+      const payload = {email: user.email}
+      const token = jwt.sign(payload, secretKey, { expiresIn: 600 });
+
+      // send verification email
+      let response = await sendMail('forgotPassword', user, token);
+      if(response == 'sent')   return res.status(200).send('Email sent successfully! Please check your email to verify your account.');
+      else if(response == 'error') return res.status(500).send('Error in sending verification email.');
+      else return res.status(500).send('Internal Server Error');
+    }catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: error.message });
+    }
+};
