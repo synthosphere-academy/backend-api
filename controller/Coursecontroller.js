@@ -206,3 +206,20 @@ exports.handledeletereview = async (req, res) => {
   }
 };
 
+
+// Handle show all reviews
+exports.handleshowreviews = async (req, res) => {
+  try {
+    const courseId = req.params.id; 
+
+    // Find course by ID
+    const course = await coursemain.findById({_id: courseId});
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+
+    res.status(200).json({reviews: course.reviews});
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching reviews', error });
+  }
+}
