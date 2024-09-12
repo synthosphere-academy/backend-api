@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const {secretKey} = require('../middleware/jwtsecretkey.js');
+const secretKey = process.env.JWT_SECRET_KEY;
 // console.log(secretKey);
 
 const verifyToken = (req, res, next) => {

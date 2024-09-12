@@ -1,7 +1,10 @@
 const admin = require('../model/admin');
-const {secretKey} = require('../middleware/jwtsecretkey.js');
+const secretKey = process.env.JWT_SECRET_KEY;
 const jwt = require('jsonwebtoken');
-exports.admin_login = async (req, res) => {
+
+
+// Admin login
+const admin_login = async (req, res) => {
     try {
        
         const admin_user = await admin.findOne({ username: req.body.username });
@@ -22,3 +25,8 @@ exports.admin_login = async (req, res) => {
         res.status(400).send('Error logging in: ' + error.message);
     }
 };
+
+
+module.exports = {
+    admin_login
+}

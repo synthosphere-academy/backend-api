@@ -6,13 +6,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const  instance = require('../server.js');
 const crypto = require('crypto');
-const {secretKey} = require('../middleware/jwtsecretkey.js');
+const secretKey = process.env.JWT_SECRET_KEY;
 const { default: mongoose } = require('mongoose');
 require('dotenv').config();
 const sendMail = require('../utils/nodemailer.js');
 
 
-// console.log(secretKey)
+
 
 
 //get register testing purpose
@@ -187,6 +187,8 @@ exports.handleforgotpassword = async (req, res) => {
       const token = jwt.sign(payload, secretKey, { expiresIn: 600 });
 
       // send verification email
+      console.log('1. Sending email');
+      
       let response = await sendMail('forgotPassword', user, token);
       if(response == 'sent')   return res.status(200).json({success: 'Email sent successfully! Please check your email to forgot your password.'});
       else if(response == 'error') return res.status(500).send({error: 'Error in sending verification email.'});
