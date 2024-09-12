@@ -15,10 +15,10 @@ var sendMail = async function (str, data, token) {
     // --------------------------- create email details
     let recipientEmail = data.email;
     let subject, html;
-    if (str == 'signupEmailVerification') {
-        subject = `Thank you for signup ${data.name}`;
+    if (str == 'forgotPassword') {
+        subject = `Thank you for visiting ${data.fullname}`;
         html = `<h1>Welcome to Synthosphere Academy.</h1>  
-                <p> Forgot password by clicking here: 
+                <p> Reset password by clicking here: 
                 <a href="https://synthosphereacademy.in/verify-email?token=${token}">Click here</a> </p>`
     }
 

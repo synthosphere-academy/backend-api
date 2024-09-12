@@ -9,7 +9,7 @@ const crypto = require('crypto');
 const {secretKey} = require('../middleware/jwtsecretkey.js');
 const { default: mongoose } = require('mongoose');
 require('dotenv').config();
-const { sendMail } = require('../utils/nodemailer.js');
+const sendMail = require('../utils/nodemailer.js');
 
 
 // console.log(secretKey)
@@ -188,11 +188,51 @@ exports.handleforgotpassword = async (req, res) => {
 
       // send verification email
       let response = await sendMail('forgotPassword', user, token);
-      if(response == 'sent')   return res.status(200).send('Email sent successfully! Please check your email to verify your account.');
-      else if(response == 'error') return res.status(500).send('Error in sending verification email.');
-      else return res.status(500).send('Internal Server Error');
+      if(response == 'sent')   return res.status(200).json({success: 'Email sent successfully! Please check your email to forgot your password.'});
+      else if(response == 'error') return res.status(500).send({error: 'Error in sending verification email.'});
+      else return res.status(500).json({error: 'Internal Server Error'});
     }catch (error) {
         console.log(error.message);
         res.status(500).json({ error: error.message });
+    }
+};
+
+
+exports.handleVerifyLinkSentOnEmail =  async (req, res) => {
+    try{
+        const token = req.query.token;
+        if(!token) return res.status(401).json({error: 'Link Expired!'});
+
+        const payload = jwt.verify(token, secret);
+        if(!payload) return res.status(401).send('Link Expired!');
+
+        const user = await User.findOne({email: payload.email});
+        if(!user) return res.status(401).json({message: 'Account not found!'});
+
+        res.status(200).json({message: 'Email verification successful', user: user});
+    }catch(err){
+        res.status(401).json({ error: 'Session Expired. Please Login again.' });
+    }
+};
+
+
+exports.handleUpdatePassword =  async (req, res) => {
+    try{
+    const {email, password, confirm_password} = req.body;
+
+    const user = await User.findOne({email});
+    if(!user) return res.status(401).json({message: 'Account not found!'});
+
+    if(!email || !password || !confirm_password) return res.status(401).json({message: 'All fields must be filled.'});
+    if(password !== confirm_password) return res.status(401).json({message: "Passwords & confirm password didn't match."});
+
+    
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    await user.save();
+        
+    res.status(200).json({message: 'Password updated successfully. Now you can login.', user: user});
+    }catch(err){
+        res.status(401).json({ error: 'Session Expired. Please Login again.' });
     }
 };

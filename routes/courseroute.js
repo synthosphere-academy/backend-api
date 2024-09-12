@@ -1,5 +1,5 @@
 const express = require('express');
-const {getenrolledcourseby_userid,getenrolledcourseby_teacherid,get_course,course,getcourse_by_id,searchcourse,update_course,delete_course,completedchapter,getCompletedChapters,handlesubmitreview,handledeletereview }  = require('../controller/Coursecontroller')
+const {getenrolledcourseby_userid,getenrolledcourseby_teacherid,get_course,course,getcourse_by_id,searchcourse,update_course,delete_course,completedchapter,getCompletedChapters,handlesubmitreview,handledeletereview,handleUpdatePassword }  = require('../controller/Coursecontroller')
 const {blog_post,get_blog,getblogby_id,getblogby_slag,update_blog,delete_blog} = require('../controller/blogcontroller')
 const verifyToken = require('../middleware/authMiddleware.js');
 const router = express.Router();
