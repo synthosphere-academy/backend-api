@@ -193,7 +193,7 @@ const handleforgotpassword = async (req, res) => {
 
         // generate JWT token
         const payload = { email: user.email }
-        const token = jwt.sign(payload, secretKey, { expiresIn: 600 });
+        const token = jwt.sign(payload, secretKey, { expiresIn: '2h' });
 
         // send verification email
         console.log('1. Sending email');
