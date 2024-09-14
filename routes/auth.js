@@ -43,7 +43,7 @@ router.get('/getuserbyteacherid/:id', userdetailsbyteacherid);
 
 // Routes for forgot password & sending link on email
 router.post('/forgotpassword', handleforgotpassword);
-router.get('/verifysentemail/:token', handleVerifyLinkSentOnEmail);
+router.get('/verifysentemail', handleVerifyLinkSentOnEmail);
 router.post('/updatepassword', handleUpdatePassword);
 
 

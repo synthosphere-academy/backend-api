@@ -213,9 +213,10 @@ const handleforgotpassword = async (req, res) => {
 const handleVerifyLinkSentOnEmail = async (req, res) => {
     try {
         const token = req.query.token;
+        
         if (!token) return res.status(401).json({ error: 'Link Expired!' });
 
-        const payload = jwt.verify(token, secret);
+        const payload = jwt.verify(token, secretKey);
         if (!payload) return res.status(401).send('Link Expired!');
 
         const user = await User.findOne({ email: payload.email });
@@ -240,8 +241,8 @@ const handleUpdatePassword = async (req, res) => {
         if (password !== confirm_password) return res.status(401).json({ message: "Passwords & confirm password didn't match." });
 
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        user.password = hashedPassword;
+        //  const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = password;
         await user.save();
 
         res.status(200).json({ message: 'Password updated successfully. Now you can login.', user: user });
