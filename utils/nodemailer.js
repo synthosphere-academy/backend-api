@@ -30,7 +30,7 @@ var sendMail = async function (str, data, token) {
         subject = `Thank you for visiting ${data.fullname}`;
         html = `<h1>Welcome to Synthosphere Academy.</h1>  
                 <p> Reset password by clicking here: 
-                <a href="https://synthosphereacademy.in/verify-email?token=${token}">Click here</a> </p>`
+                <a href="http://localhost:5173/verify-email?token=${token}">Click here</a> </p>`
     }
     
     console.log(str);
