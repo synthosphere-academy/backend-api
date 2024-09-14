@@ -1,5 +1,5 @@
 const express = require('express');
-const { register, login ,get_user,get_register,offlineregister,paymentverification,get_offline,get_payment ,get_onlinepayment,getuser_by_id,handleforgotpassword,handleVerifyLinkSentOnEmail,handleUpdatePassword } = require('../controller/authController');
+const { register, login ,get_user,offlineregister,paymentverification,get_offline,get_payment ,get_onlinepayment,getuser_by_id,handleforgotpassword,handleVerifyLinkSentOnEmail,handleUpdatePassword } = require('../controller/authController');
 
 const {admin_login} = require('../controller/adminCo');
 const authMiddleware = require('../middleware/authMiddleware');
@@ -8,7 +8,7 @@ const {teacher_post,teacher_login,get_teacher,userdetailsbyteacherid }= require(
 
 const router = express.Router();
 
-router.get('/get_register', get_register);
+
  router.post('/offlineregister', offlineregister);
  //for offline student  paymentverification
  router.post('/paymentverification', paymentverification);
