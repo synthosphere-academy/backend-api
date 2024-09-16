@@ -1,10 +1,30 @@
 const coursemain = require('../model/Course_main');
 const Checkout = require('../model/checkout');
 const CompleteChapter = require('../model/completechapter');
+const User = require('../model/student');
 exports.get_course = async (req, res) => {
     try{
         const allcourse = await  coursemain.find({});
-        res.send({status:"ok" , data:allcourse })
+        const coursesWithRatings = allcourse.map(course => {
+          let totalRatings = course.reviews.length; // Total number of reviews
+          let sumRatings = course.reviews.reduce((sum, review) => sum + review.rating, 0); // Sum of all review ratings
+          let averageRating = totalRatings > 0 ? (sumRatings / totalRatings).toFixed(2) : 0; // Calculate average rating
+          if (averageRating % 1 > 0.5) {
+            // If decimal part > 0.5, round up
+            averageRating = Math.ceil(averageRating);
+          } else {
+            // If decimal part <= 0.5, round down
+            averageRating = Math.floor(averageRating);
+          }
+      
+          // Attach the averageRating to each course object
+          return {
+              ...course._doc, // Spread the course document (Mongoose-specific)
+              averageRating: averageRating // Attach the average rating
+          };
+      });
+        
+        res.send({status:"ok" , data:coursesWithRatings })
     }catch (error){
         console.error(error);
     }
@@ -152,24 +172,31 @@ exports.handlesubmitreview = async (req, res) => {
     const { user_id, rating, comment} = req.body;
     const courseId = req.params.id;
 
-    // Rating must be within 1-5
-    if (rating < 1 || rating > 5) {
-      return res.status(400).json({ message: 'Rating must be between 1 and 5' });
-    }
+    // Find user
+    const user = await User.findOne({ _id: user_id});
+    if(!user) {return res.status(400).json({ message: 'User not found' });}
 
     // Find course
     const course = await coursemain.findOne({_id: courseId});
-    if(!course) {res.status(400).json({ message: 'Course not found' });}
+    if(!course) {return res.status(400).json({ message: 'Course not found' });}
+
+
+    // Check if user has already submitted a review for this course
+    const reviewExists = course.reviews.some(review => review.user_id.toString() === user_id);
+    if (reviewExists) {
+      return res.status(400).json({ message: 'Review already submitted.' });
+    }
     
     // Add the review to the course's reviews array
     course.reviews.push({
-      user_id: user_id,
+      user_id: user_id, 
+      username: user.fullname,
       rating: rating, 
       comment: comment, 
     });
     await course.save();
 
-    res.status(200).json({ message: 'Review submitted successfully' });
+    return res.status(200).json({ message: 'Review submitted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error submitting review', error });
   }
@@ -223,3 +250,12 @@ exports.handleshowreviews = async (req, res) => {
     res.status(500).json({ message: 'Error fetching reviews', error });
   }
 }
+
+
+
+// Find average rating
+// Import necessary modules
+ // Adjust path based on your project structure
+
+// Function to calculate the average rating
+

@@ -84,6 +84,7 @@ const SectionSchema = new mongoose.Schema({
     reviews: [
         {
             user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+            username: { type: String },
             rating: { type: Number, min: 1, max: 5 },
             comment: String,
             createdAt: { type: Date, default: Date.now }

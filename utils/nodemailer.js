@@ -27,10 +27,12 @@ var sendMail = async function (str, data, token) {
     
     
     if (str == 'forgotPassword') {
-        subject = `Thank you for visiting ${data.fullname}`;
-        html = `<h1>Welcome to Synthosphere Academy.</h1>  
+        subject = `Password Reset E-mail`;
+        html = `<h1>you're receiving this e-mail because you or someone else has requested a password reset for your user account at .</h1>  
                 <p> Reset password by clicking here: 
-                <a href="https://www.synthosphereacademy.in/verify-email?token=${token}">Click here</a> </p>`
+                <a href="https://www.synthosphereacademy.in/verify-email?token=${token}">Click here</a>
+                 </p>
+                 <p>If you did not request a password reset you can safely ignore this email.</p>`
     }
     
     console.log(str);
