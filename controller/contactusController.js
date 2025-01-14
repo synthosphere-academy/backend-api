@@ -9,3 +9,12 @@ exports.contact= async (req, res) => {
         res.status(400).send('Error formsubmit : ' + error.message);
     }
 }; 
+exports.get_contact = async (req, res) => {
+    try {
+      const allcontact = await contactus.find({});
+      res.send({ status: "ok", data: allcontact })
+    } catch (error) {
+      console.error(error);
+      res.status(400).send('Error : ' + error.message);
+    }
+  }

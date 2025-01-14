@@ -38,6 +38,7 @@ exports.checkout= async(req,res) => {
           };
           const order = await instance.orders.create(options)
            console.log(order);
+           console.log(process.env.RAZORPAY_API_SECRET);
             res.status(200).json({success:true, order});
     }catch(error) {
         console.error('Error creating Razorpay order:', error);
@@ -51,7 +52,7 @@ exports.checkout= async(req,res) => {
         console.log(razorpay_payment_id);
         console.log(razorpay_signature);
         try{
-            const{ fullname,userId,phoneno,state,city,email, id ,courses,amount,razorpay_order_id, razorpay_payment_id, razorpay_signature} = req.body;
+            const{ fullname,userId,phoneno,state,city,email, id ,courses,amount,razorpay_order_id, razorpay_payment_id, razorpay_signature , affiliateCode} = req.body;
         
             const hmac = crypto.createHmac('sha256',  process.env.RAZORPAY_API_SECRET);
             hmac.update(razorpay_order_id + '|' + razorpay_payment_id);
@@ -64,7 +65,14 @@ exports.checkout= async(req,res) => {
                 console.log('Saving user data:', paymentdetails_student);
                 try {
                   await paymentdetails_student.save();
-                    return res.redirect(process.env.FRONTEND_LOCALHOST_URL+'/paymentSucess');
+                 
+                   
+                    if (affiliateCode) {
+                      console.log(affiliateCode)
+                      await addComissionToAffiliate(affiliateCode, id, amount, amount * 0.1);
+                    }
+                    // return res.redirect(process.env.FRONTEND_LOCALHOST_URL+'/paymentSucess');
+                    return res.redirect('http://localhost:5173/paymentSucess');
                     //  console.log('student paymentdata saved successfully');
                 } catch (error) {
                     console.error('Error saving user data:', error.message);

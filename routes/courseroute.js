@@ -23,7 +23,7 @@ router.get('/getcompletedchapter/:userId/:id', getCompletedChapters);
 
 // New Routes added by Ankit
 router.post('/submitreview/:id', handlesubmitreview);
-router.post('/deletereview/:courseId/:review_owner_id', handledeletereview);
+router.delete('/deletereview/:courseId/:review_owner_id', handledeletereview);
 router.get('/showreviews/:id', handleshowreviews);
 
 module.exports = router;

@@ -19,14 +19,16 @@ app.use(morgan('combined'));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
  
-
 // Routes
 const authRoutes = require('./routes/auth');
+const courseRoute = require('./routes/courseroute');
+const contactRoutes = require('./routes/contactroute');
+const affiliateRoutes = require('./routes/affiliateroutes');
 app.use('/api/auth', authRoutes);
- const courseRoute = require('./routes/courseroute');
- app.use('/api/v1',courseRoute);
- const contactRoutes = require('./routes/contactroute');
- app.use('/api/v2',contactRoutes);
+app.use('/api/v1', courseRoute);
+app.use('/api/v2', contactRoutes);
+app.use('/api/affiliate', affiliateRoutes);
+ 
 
 //for razorpay
 

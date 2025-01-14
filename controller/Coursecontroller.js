@@ -206,27 +206,21 @@ exports.handlesubmitreview = async (req, res) => {
 // Handle delete review by admin
 exports.handledeletereview = async (req, res) => {
   try {
-    const courseId = req.params.courseId; // Course ID from request params
-    const review_owner_id = req.params.review_owner_id; // Review_owner ID from request params
-
+    const courseId = req.params.id; // Course ID from request params
+    const review_owner_id = req.params.reviewownerid; // Review_owner ID from request params
+    console.log(courseId);
+    console.log(review_owner_id);
     // Find course by ID
-    const course = await coursemain.findById(courseId);
+    const course = await coursemain.findOne({courseId});
     if (!course) {
       return res.status(404).json({ message: 'Course not found' });
     }
 
     // Find the review index by review_owner_id
     const reviewIndex = course.reviews.findIndex(review => review.user_id.toString() === review_owner_id);
-
-    // Check if review exists
-    if (reviewIndex === -1) {
-      return res.status(404).json({ message: 'Review not found' });
-    }
-
     // Remove the review from the reviews array
     course.reviews.splice(reviewIndex, 1);
     await course.save();
-
     res.status(200).json({ message: 'Review deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting review', error });
@@ -238,13 +232,11 @@ exports.handledeletereview = async (req, res) => {
 exports.handleshowreviews = async (req, res) => {
   try {
     const courseId = req.params.id; 
-
     // Find course by ID
     const course = await coursemain.findById({_id: courseId});
     if (!course) {
       return res.status(404).json({ message: 'Course not found' });
     }
-
     res.status(200).json({reviews: course.reviews});
   } catch (error) {
     res.status(500).json({ message: 'Error fetching reviews', error });
