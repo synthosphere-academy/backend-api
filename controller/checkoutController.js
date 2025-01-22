@@ -71,8 +71,8 @@ exports.checkout= async(req,res) => {
                     //   console.log(affiliateCode)
                     //   await addComissionToAffiliate(affiliateCode, id, amount, amount * 0.1);
                     // }
-                    // return res.redirect(process.env.FRONTEND_LOCALHOST_URL+'/paymentSucess');
-                    return res.redirect('http://localhost:5173/paymentSucess');
+                    return res.redirect(process.env.FRONTEND_LOCALHOST_URL+'/paymentSucess');
+                    // return res.redirect('http://localhost:5173/paymentSucess');
                     //  console.log('student paymentdata saved successfully');
                 } catch (error) {
                     console.error('Error saving user data:', error.message);
