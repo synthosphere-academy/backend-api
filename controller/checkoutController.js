@@ -67,10 +67,10 @@ exports.checkout= async(req,res) => {
                   await paymentdetails_student.save();
                  
                    
-                    if (affiliateCode) {
-                      console.log(affiliateCode)
-                      await addComissionToAffiliate(affiliateCode, id, amount, amount * 0.1);
-                    }
+                    // if (affiliateCode) {
+                    //   console.log(affiliateCode)
+                    //   await addComissionToAffiliate(affiliateCode, id, amount, amount * 0.1);
+                    // }
                     // return res.redirect(process.env.FRONTEND_LOCALHOST_URL+'/paymentSucess');
                     return res.redirect('http://localhost:5173/paymentSucess');
                     //  console.log('student paymentdata saved successfully');
