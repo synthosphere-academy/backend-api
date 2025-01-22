@@ -52,7 +52,7 @@ exports.checkout= async(req,res) => {
         console.log(razorpay_payment_id);
         console.log(razorpay_signature);
         try{
-            const{ fullname,userId,phoneno,state,city,email, id ,courses,amount,razorpay_order_id, razorpay_payment_id, razorpay_signature , affiliateCode} = req.body;
+            const{ fullname,userId,phoneno,state,city,email, id ,courses,amount,razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
         
             const hmac = crypto.createHmac('sha256',  process.env.RAZORPAY_API_SECRET);
             hmac.update(razorpay_order_id + '|' + razorpay_payment_id);
