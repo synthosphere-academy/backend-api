@@ -44,7 +44,6 @@ exports.checkout= async(req,res) => {
         res.status(400).send('Internal Server Error');
     } 
     };
-
     exports.paymentverification_students= async(req,res) => {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
         console.log(razorpay_order_id);
