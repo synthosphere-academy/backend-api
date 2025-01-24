@@ -28,7 +28,6 @@ exports.getorderdetails_by_orderid = async (req, res) => {
 };
 
 
-
 exports.checkout= async(req,res) => {
     try{ 
      const  options = {
