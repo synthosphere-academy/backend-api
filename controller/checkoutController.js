@@ -64,7 +64,7 @@ exports.checkout= async(req,res) => {
                 try {
                   await paymentdetails_student.save();
                  
-                   
+                  
                     // if (affiliateCode) {
                     //   console.log(affiliateCode)
                     //   await addComissionToAffiliate(affiliateCode, id, amount, amount * 0.1);
